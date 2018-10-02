@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WebAppLinn3.Models;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAppLinn3.Controllers
 {
@@ -16,44 +12,37 @@ namespace WebAppLinn3.Controllers
 
         [HttpGet]
         [Route("api/Category/Index")]
-        public IEnumerable<TblCategory> Index()
+        public IEnumerable<Category> Index()
         {
             return objcategory.GetAllCategories();
         }
 
         [HttpPost]
         [Route("api/Category/Create")]
-        public int Create([FromBody] TblCategory category)
+        public int Create([FromBody] Category category)
         {
             return objcategory.AddCategory(category);
         }
 
         [HttpGet]
         [Route("api/Category/Details/{id}")]
-        public TblCategory Details(int id)
+        public Category Details(string id)
         {
             return objcategory.GetCategoryData(id);
         }
 
         [HttpPut]
         [Route("api/Category/Edit")]
-        public int Edit([FromBody]TblCategory category)
+        public int Edit([FromBody]Category category)
         {
             return objcategory.UpdateCategory(category);
         }
 
         [HttpDelete]
         [Route("api/Category/Delete/{id}")]
-        public int Delete(int id)
+        public int Delete(string id)
         {
             return objcategory.DeleteCategory(id);
-        }
-
-        [HttpGet]
-        [Route("api/Category/GetCityList")]
-        public IEnumerable<TblCities> Details()
-        {
-            return objcategory.GetCities();
         }
     }
 

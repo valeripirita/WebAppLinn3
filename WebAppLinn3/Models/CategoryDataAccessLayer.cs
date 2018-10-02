@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,13 +7,13 @@ namespace WebAppLinn3.Models
 {
     public class CategoryDataAccessLayer
     {
-        myTestDBContext db = new myTestDBContext();
+        myLinnWebApiContext api = new myLinnWebApiContext();
 
-        public IEnumerable<TblCategory> GetAllCategories()
+        public IEnumerable<Category> GetAllCategories()
         {
             try
             {
-                return db.TblCategory.ToList();
+                return api.GetAllCategories();
             }
             catch
             {
@@ -23,12 +22,11 @@ namespace WebAppLinn3.Models
         }
 
         //To Add new category record 
-        public int AddCategory(TblCategory category)
+        public int AddCategory(Category category)
         {
             try
             {
-                db.TblCategory.Add(category);
-                db.SaveChanges();
+                api.AddCategory(category);
                 return 1;
             }
             catch
@@ -38,13 +36,11 @@ namespace WebAppLinn3.Models
         }
 
         //To Update the records of a particluar category
-        public int UpdateCategory(TblCategory category)
+        public int UpdateCategory(Category category)
         {
             try
             {
-                db.Entry(category).State = EntityState.Modified;
-                db.SaveChanges();
-
+                api.UpdateCategory(category);
                 return 1;
             }
             catch
@@ -54,12 +50,11 @@ namespace WebAppLinn3.Models
         }
 
         //Get the details of a particular category
-        public TblCategory GetCategoryData(int id)
+        public Category GetCategoryData(string id)
         {
             try
             {
-                TblCategory category = db.TblCategory.Find(id);
-                return category;
+                return api.GetCategoryData(id);
             }
             catch
             {
@@ -68,28 +63,17 @@ namespace WebAppLinn3.Models
         }
 
         //To Delete the record on a particular category
-        public int DeleteCategory(int id)
+        public int DeleteCategory(string id)
         {
             try
             {
-                TblCategory emp = db.TblCategory.Find(id);
-                db.TblCategory.Remove(emp);
-                db.SaveChanges();
+                api.DeleteCategory(id);
                 return 1;
             }
             catch
             {
                 throw;
             }
-        }
-
-        //To Get the list of Cities
-        public List<TblCities> GetCities()
-        {
-            List<TblCities> lstCity = new List<TblCities>();
-            lstCity = (from CityList in db.TblCities select CityList).ToList();
-
-            return lstCity;
         }
     }
 }

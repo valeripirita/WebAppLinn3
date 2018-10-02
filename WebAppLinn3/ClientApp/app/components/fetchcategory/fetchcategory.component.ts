@@ -8,20 +8,29 @@ import { CategoryService } from '../../services/categoryservice.service'
 })
 
 export class FetchCategoryComponent {
-    public empList: CategoryData[];
+
+    public apiToken: string = "097b0f85-7a6d-44ef-9aac-abbdd994bcc4";
+    public catList: CategoryData[] = [];
 
     constructor(public http: Http, private _router: Router, private _categoryService: CategoryService) {
         this.getCategories();
     }
 
+    setApiToken(apiToken: string) {
+        if (this.apiToken === apiToken)
+            return;
+        this.apiToken = apiToken;
+        this.getCategories();
+    }
+
     getCategories() {
         this._categoryService.getCategories().subscribe(
-            data => this.empList = data
+            data => this.catList = data
         )
     }
 
-    delete(categoryID) {
-        var ans = confirm("Do you want to delete customer with Id: " + categoryID);
+    delete(categoryID, categoryName) {
+        var ans = confirm("Do you want to delete category \"" + categoryName + "\"?");
         if (ans) {
             this._categoryService.deleteCategory(categoryID).subscribe((data) => {
                 this.getCategories();
@@ -31,10 +40,7 @@ export class FetchCategoryComponent {
 }
 
 interface CategoryData {
-    categoryId: number;
-    name: string;
-    gender: string;
-    city: string;
-    department: string;
-
+    categoryId: string;
+    categoryName: string;
+    categoryStock: number;
 }

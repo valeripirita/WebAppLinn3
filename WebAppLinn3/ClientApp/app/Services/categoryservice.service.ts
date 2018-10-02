@@ -14,19 +14,13 @@ export class CategoryService {
         this.myAppUrl = baseUrl;
     }
 
-    getCityList() {
-        return this._http.get(this.myAppUrl + 'api/Category/GetCityList')
-            .map(res => res.json())
-            .catch(this.errorHandler);
-    }
-
     getCategories() {
         return this._http.get(this.myAppUrl + 'api/Category/Index')
             .map((response: Response) => response.json())
             .catch(this.errorHandler);
     }
 
-    getCategoryById(id: number) {
+    getCategoryById(id: string) {
         return this._http.get(this.myAppUrl + "api/Category/Details/" + id)
             .map((response: Response) => response.json())
             .catch(this.errorHandler)

@@ -7,5 +7,5 @@ We are also going to bind a dropdown list in the Angular Form to a table in the 
 
 1) Open project in Visual Studio 2017
 2) Solution Explorer: Dependencies => npm => r-click => Restore Packages
-3) Wait until finished (check status bar)
-4) F5 => should work :)
+3) Wait until finished (check status bar: "Installing packages" => "Installing packages complete")
+4) Ctrl-Shift-B => should build, F5 => should work :)
