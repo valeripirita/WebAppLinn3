@@ -7,7 +7,7 @@ namespace WebAppLinn3.Models
     public partial class myTestDBContext : DbContext
     {
         public virtual DbSet<TblCities> TblCities { get; set; }
-        public virtual DbSet<TblEmployee> TblEmployee { get; set; }
+        public virtual DbSet<TblCategory> TblCategory { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -34,13 +34,13 @@ namespace WebAppLinn3.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<TblEmployee>(entity =>
+            modelBuilder.Entity<TblCategory>(entity =>
             {
-                entity.HasKey(e => e.EmployeeId);
+                entity.HasKey(e => e.CategoryId);
 
-                entity.ToTable("tblEmployee");
+                entity.ToTable("tblCategory");
 
-                entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+                entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
 
                 entity.Property(e => e.City)
                     .IsRequired()

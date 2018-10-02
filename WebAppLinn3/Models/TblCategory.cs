@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace WebAppLinn3.Models
 {
-    public partial class TblEmployee
+    public partial class TblCategory
     {
-        public int EmployeeId { get; set; }
+        public int CategoryId { get; set; }
         public string Name { get; set; }
         public string City { get; set; }
         public string Department { get; set; }

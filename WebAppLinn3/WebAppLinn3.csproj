@@ -23,15 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\app\components\addemployee\addemployee.component.ts" />
-    <None Remove="ClientApp\app\components\fetchemployee\fetchemployee.component.ts" />
-    <None Remove="ClientApp\app\Services\empservice.service.ts" />
+    <None Remove="ClientApp\app\components\addcategory\addcategory.component.ts" />
+    <None Remove="ClientApp\app\components\fetchcategory\fetchcategory.component.ts" />
+    <None Remove="ClientApp\app\Services\categoryservice.service.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\app\components\addemployee\addemployee.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\fetchemployee\fetchemployee.component.ts" />
-    <TypeScriptCompile Include="ClientApp\app\Services\empservice.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\addcategory\addcategory.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\fetchcategory\fetchcategory.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\Services\categoryservice.service.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

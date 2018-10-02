@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace WebAppLinn3.Models
 {
-    public class EmployeeDataAccessLayer
+    public class CategoryDataAccessLayer
     {
         myTestDBContext db = new myTestDBContext();
 
-        public IEnumerable<TblEmployee> GetAllEmployees()
+        public IEnumerable<TblCategory> GetAllCategories()
         {
             try
             {
-                return db.TblEmployee.ToList();
+                return db.TblCategory.ToList();
             }
             catch
             {
@@ -22,12 +22,12 @@ namespace WebAppLinn3.Models
             }
         }
 
-        //To Add new employee record 
-        public int AddEmployee(TblEmployee employee)
+        //To Add new category record 
+        public int AddCategory(TblCategory category)
         {
             try
             {
-                db.TblEmployee.Add(employee);
+                db.TblCategory.Add(category);
                 db.SaveChanges();
                 return 1;
             }
@@ -37,12 +37,12 @@ namespace WebAppLinn3.Models
             }
         }
 
-        //To Update the records of a particluar employee
-        public int UpdateEmployee(TblEmployee employee)
+        //To Update the records of a particluar category
+        public int UpdateCategory(TblCategory category)
         {
             try
             {
-                db.Entry(employee).State = EntityState.Modified;
+                db.Entry(category).State = EntityState.Modified;
                 db.SaveChanges();
 
                 return 1;
@@ -53,13 +53,13 @@ namespace WebAppLinn3.Models
             }
         }
 
-        //Get the details of a particular employee
-        public TblEmployee GetEmployeeData(int id)
+        //Get the details of a particular category
+        public TblCategory GetCategoryData(int id)
         {
             try
             {
-                TblEmployee employee = db.TblEmployee.Find(id);
-                return employee;
+                TblCategory category = db.TblCategory.Find(id);
+                return category;
             }
             catch
             {
@@ -67,13 +67,13 @@ namespace WebAppLinn3.Models
             }
         }
 
-        //To Delete the record on a particular employee
-        public int DeleteEmployee(int id)
+        //To Delete the record on a particular category
+        public int DeleteCategory(int id)
         {
             try
             {
-                TblEmployee emp = db.TblEmployee.Find(id);
-                db.TblEmployee.Remove(emp);
+                TblCategory emp = db.TblCategory.Find(id);
+                db.TblCategory.Remove(emp);
                 db.SaveChanges();
                 return 1;
             }

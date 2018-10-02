@@ -1,17 +1,17 @@
-﻿<h1>Employee Data</h1>
+﻿<h1>Category Data</h1>
 
-<p>This component demonstrates fetching Employee data from the server.</p>
+<p>This component demonstrates fetching Category data from the server.</p>
 
 <p *ngIf="!empList"><em>Loading...</em></p>
 
 <p>
-    <a [routerLink]="['/register-employee']">Create New</a>
+    <a [routerLink]="['/register-category']">Create New</a>
 </p>
 
 <table class='table' *ngIf="empList">
     <thead>
         <tr>
-            <th>EmployeeId</th>
+            <th>CategoryId</th>
             <th>Name</th>
             <th>Gender</th>
             <th>Department</th>
@@ -20,15 +20,15 @@
     </thead>
     <tbody>
         <tr *ngFor="let emp of empList">
-            <td>{{ emp.employeeId }}</td>
+            <td>{{ emp.categoryId }}</td>
             <td>{{ emp.name }}</td>
             <td>{{ emp.gender }}</td>
             <td>{{ emp.department }}</td>
             <td>{{ emp.city }}</td>
             <td>
             <td>
-                <a [routerLink]="['/employee/edit/', emp.employeeId]">Edit</a> |
-                <a [routerLink]="" (click)="delete(emp.employeeId)">Delete</a>
+                <a [routerLink]="['/category/edit/', emp.categoryId]">Edit</a> |
+                <a [routerLink]="" (click)="delete(emp.categoryId)">Delete</a>
             </td>
         </tr>
     </tbody>
