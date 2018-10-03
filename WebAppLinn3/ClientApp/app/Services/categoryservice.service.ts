@@ -44,6 +44,18 @@ export class CategoryService {
             .catch(this.errorHandler);
     }
 
+    getApiStatus() {
+        return this._http.get(this.myAppUrl + "api/Category/ApiStatus")
+            .map((response: Response) => response.json())
+            .catch(this.errorHandler);
+    }
+
+    setApiToken(token) {
+        return this._http.get(this.myAppUrl + "api/Category/SetApiToken/" + token)
+            .map((response: Response) => response.json())
+            .catch(this.errorHandler);
+    }
+
     errorHandler(error: Response) {
         console.log(error);
         return Observable.throw(error);

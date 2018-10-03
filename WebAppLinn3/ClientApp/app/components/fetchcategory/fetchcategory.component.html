@@ -1,15 +1,17 @@
 ﻿<h1>Categories</h1>
 
 <p>This component demonstrates fetching data from the Linnworks API server.</p>
+<p>Status message: {{ apiStatus.statusMsg }}</p>
 
 <hr />
 <p *ngIf="!catList"><em>Loading...</em></p>
 <label class=" control-label col-md-12">Enter API token</label>
 <div class="col-md-4">
-    <input #inpToken class="form-control" type="text" value="{{ apiToken }}">
+    <input #inpToken class="form-control" type="text" value="{{ apiStatus.apiToken }}">
 </div>
 <button class="btn" (click)="setApiToken(inpToken.value)">Apply</button>
-<button class="btn" (click)="setApiToken('097b0f85-7a6d-44ef-9aac-abbdd994bcc4')">Default</button>
+<button class="btn" (click)="setApiToken()">Don't have one? Try mine :)</button>
+
 <hr />
 <p>
     <a [routerLink]="['/register-category']">Create Category</a>

@@ -7,7 +7,7 @@ namespace WebAppLinn3.Models
 {
     public class CategoryDataAccessLayer
     {
-        myLinnWebApiContext api = new myLinnWebApiContext();
+        private static myLinnWebApiContext api = new myLinnWebApiContext();
 
         public IEnumerable<Category> GetAllCategories()
         {
@@ -22,12 +22,11 @@ namespace WebAppLinn3.Models
         }
 
         //To Add new category record 
-        public int AddCategory(Category category)
+        public ApiStatus AddCategory(Category category)
         {
             try
             {
-                api.AddCategory(category);
-                return 1;
+                return api.AddCategory(category);
             }
             catch
             {
@@ -36,12 +35,11 @@ namespace WebAppLinn3.Models
         }
 
         //To Update the records of a particluar category
-        public int UpdateCategory(Category category)
+        public ApiStatus UpdateCategory(Category category)
         {
             try
             {
-                api.UpdateCategory(category);
-                return 1;
+                return api.UpdateCategory(category);
             }
             catch
             {
@@ -63,12 +61,35 @@ namespace WebAppLinn3.Models
         }
 
         //To Delete the record on a particular category
-        public int DeleteCategory(string id)
+        public ApiStatus DeleteCategory(string id)
         {
             try
             {
-                api.DeleteCategory(id);
-                return 1;
+                return api.DeleteCategory(id);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public ApiStatus GetApiStatus()
+        {
+            try
+            {
+                return api.apiStatus;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public ApiStatus SetApiToken(string token)
+        {
+            try
+            {
+                return api.SetApiToken(token);
             }
             catch
             {

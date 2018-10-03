@@ -19,7 +19,7 @@ namespace WebAppLinn3.Controllers
 
         [HttpPost]
         [Route("api/Category/Create")]
-        public int Create([FromBody] Category category)
+        public ApiStatus Create([FromBody] Category category)
         {
             return objcategory.AddCategory(category);
         }
@@ -33,16 +33,32 @@ namespace WebAppLinn3.Controllers
 
         [HttpPut]
         [Route("api/Category/Edit")]
-        public int Edit([FromBody]Category category)
+        public ApiStatus Edit([FromBody]Category category)
         {
             return objcategory.UpdateCategory(category);
         }
 
         [HttpDelete]
         [Route("api/Category/Delete/{id}")]
-        public int Delete(string id)
+        public ApiStatus Delete(string id)
         {
             return objcategory.DeleteCategory(id);
+        }
+
+        [HttpGet]
+        [Route("api/Category/ApiStatus")]
+        public ApiStatus GetApiStatus()
+        {
+            return objcategory.GetApiStatus();
+        }
+
+        //public string GetApiToken() => objcategory.GetApiToken();
+
+        [HttpGet]
+        [Route("api/Category/SetApiToken/{token}")]
+        public ApiStatus SetApiToken(string token)
+        {
+            return objcategory.SetApiToken(token);
         }
     }
 

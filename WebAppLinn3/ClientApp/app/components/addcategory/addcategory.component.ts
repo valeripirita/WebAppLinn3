@@ -16,7 +16,8 @@ export class createcategory implements OnInit {
     errorMessage: any;
 
     constructor(private _fb: FormBuilder, private _avRoute: ActivatedRoute,
-        private _categoryService: CategoryService, private _router: Router) {
+        private _router: Router, private _categoryService: CategoryService) {
+
         if (this._avRoute.snapshot.params["id"]) {
             this.categoryId = this._avRoute.snapshot.params["id"];
         }
@@ -24,6 +25,7 @@ export class createcategory implements OnInit {
         this.categoryForm = this._fb.group({
             categoryId: "",
             categoryName: ['', [Validators.required]],
+            categoryStock: 0,
         })
     }
 
@@ -35,7 +37,6 @@ export class createcategory implements OnInit {
                 .subscribe(resp => this.categoryForm.setValue(resp)
                 , error => this.errorMessage = error);
         }
-
     }
 
     save() {
@@ -63,4 +64,5 @@ export class createcategory implements OnInit {
     }
 
     get categoryName() { return this.categoryForm.get('categoryName'); }
+    //get categoryStock() { return 0; }
 }
