@@ -13,31 +13,50 @@ namespace WebAppLinn3.Models
 {
     public class ApiStatus
     {
-        public string ApiToken { get; set; } = "please-provide-api-token";
+        public string ApiToken { get; set; } = "your-api-token";
         public string ApiServer { get; set; } = "https://eu.linnworks.net/";
         public string StatusMsg { get; set; } = "loading, please wait ...";
     }
 
     public partial class myLinnWebApiContext
     {
-        public ApiStatus apiStatus { get; set; } = new ApiStatus();
         private static HttpClient httpClient = new HttpClient();
+        public ApiStatus apiStatus { get; set; } = new ApiStatus();
 
         public ApiStatus SetApiToken(string token)
         {
-            apiStatus.ApiToken = token;
-            apiStatus.StatusMsg = string.Format("SetApiToken(\"{0}\") => Done", token);
+            apiStatus.StatusMsg = string.Format("SetApiToken(\"{0}\") => ", token);
+            if (token == null || token.Length == 0)
+                apiStatus.StatusMsg += "Error: Token can't be empty!";
+            else
+            {
+                apiStatus.StatusMsg += "OK";
+                apiStatus.ApiToken = token;
+            }
             return apiStatus;
         }
 
         //Helper function, related to target site API
-        private async Task<HttpResponseMessage> SendRequestToApiAsync(string route, string query = "")
+        private JObject ExecuteApiRequest(string route, string query = "")
         {
             string requestUri = apiStatus.ApiServer + route + "?" + query;
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, requestUri);
+            var request = new HttpRequestMessage(HttpMethod.Post, requestUri);
             request.Headers.Add("Authorization", apiStatus.ApiToken);
+            var response = httpClient.SendAsync(request).Result;
 
-            return await httpClient.SendAsync(request, HttpCompletionOption.ResponseContentRead);
+            string respString = response.Content.ReadAsStringAsync().Result;
+            JObject obj = JObject.Parse(respString.Length > 0 ? respString : "{}");
+            if (response.IsSuccessStatusCode)
+            {
+                obj["msg"] = "OK";
+                obj["ok"] = true;
+            }
+            else
+            {
+                obj["msg"] = obj["Message"];
+                obj["ok"] = false;
+            }
+            return obj;
         }
 
         public IEnumerable<Category> GetAllCategories()
@@ -50,18 +69,16 @@ namespace WebAppLinn3.Models
                 LEFT JOIN StockItem AS S ON P.CategoryId = S.CategoryId
                 GROUP BY P.CategoryId, P.CategoryName";
 
-            apiStatus.StatusMsg = string.Format("GetAllCategories() => ");
-            HttpResponseMessage response = SendRequestToApiAsync(route, query).Result;
-            string respString = response.Content.ReadAsStringAsync().Result;
-            var parsedObject = JObject.Parse(respString);
-            if (response.IsSuccessStatusCode)
+            var list = new List<Category>();
+            var res = ExecuteApiRequest(route, query);
+            string msg = string.Format("GetAllCategories() => {0}", res["msg"]);
+            if (res["ok"].ToObject<bool>() == true)
             {
-                var list = parsedObject["Results"].ToObject<List<Category>>();
-                apiStatus.StatusMsg += string.Format("OK, {0} item(s)", list.Count);
-                return list;
+                list = res["Results"].ToObject<List<Category>>();
+                msg += string.Format(", {0} item(s)", list.Count);
             }
-            apiStatus.StatusMsg += parsedObject["Message"].ToString();
-            return new List<Category>();
+            apiStatus.StatusMsg = msg;
+            return list;
         }
 
         public ApiStatus AddCategory(Category category)
@@ -69,17 +86,14 @@ namespace WebAppLinn3.Models
             string route = "/api/Inventory/CreateCategory";
             string query = "CategoryName=" + category.CategoryName;
 
-            apiStatus.StatusMsg = string.Format("AddCategory(\"{0}\") => ", category.CategoryName);
-            HttpResponseMessage response = SendRequestToApiAsync(route, query).Result;
-            string respString = response.Content.ReadAsStringAsync().Result;
-            var parsedObject = JObject.Parse(respString);
-            if (response.IsSuccessStatusCode)
+            var res = ExecuteApiRequest(route, query);
+            var msg = string.Format("AddCategory(\"{0}\") => {1}", category.CategoryName, res["msg"]);
+            if (res["ok"].ToObject<bool>() == true)
             {
-                category.CategoryId = parsedObject["CategoryId"].ToString();
-                apiStatus.StatusMsg += string.Format("OK, (id:\"{0}\")", category.CategoryId);
+                category.CategoryId = res["CategoryId"].ToString();
+                msg += string.Format(", (id:\"{0}\")", category.CategoryId);
             }
-            else
-                apiStatus.StatusMsg += parsedObject["Message"].ToString();
+            apiStatus.StatusMsg = msg;
             return apiStatus;
         }
 
@@ -90,16 +104,9 @@ namespace WebAppLinn3.Models
                 "\"CategoryId\": \"" + category.CategoryId + "\"," +
                 "\"CategoryName\": \"" + category.CategoryName + "\"}";
 
-            apiStatus.StatusMsg = string.Format("UpdateCategory(\"{0}\") => ", category.CategoryName);
-            HttpResponseMessage response = SendRequestToApiAsync(route, query).Result;
-            string respString = response.Content.ReadAsStringAsync().Result;
-            if (response.IsSuccessStatusCode)
-                apiStatus.StatusMsg += "OK";
-            else
-            {
-                var parsedObject = JObject.Parse(respString);
-                apiStatus.StatusMsg += parsedObject["Message"].ToString();
-            }
+            var res = ExecuteApiRequest(route, query);
+            var msg = string.Format("UpdateCategory(\"{0}\") => {1}", category.CategoryName, res["msg"]);
+            apiStatus.StatusMsg = msg;
             return apiStatus;
         }
 
@@ -114,18 +121,15 @@ namespace WebAppLinn3.Models
                 WHERE p.CategoryId LIKE '" + id + @"'
                 GROUP BY P.CategoryId, P.CategoryName";
 
-            apiStatus.StatusMsg = string.Format("GetCategoryData({0}) => ", id);
-            HttpResponseMessage response = SendRequestToApiAsync(route, query).Result;
-            string respString = response.Content.ReadAsStringAsync().Result;
-            var parsedObject = JObject.Parse(respString);
-            if (response.IsSuccessStatusCode)
+            var cat = new Category();
+            var res = ExecuteApiRequest(route, query);
+            var msg = string.Format("GetCategoryData({0}) => {1}", id, res["msg"]);
+            if (res["ok"].ToObject<bool>() == true)
             {
-                var list = parsedObject["Results"].ToObject<List<Category>>();
-                apiStatus.StatusMsg +="OK";
-                return list[0];
+                cat = res["Results"].ToObject<List<Category>>()[0];
             }
-            apiStatus.StatusMsg += parsedObject["Message"].ToString();
-            return new Category();
+            apiStatus.StatusMsg = msg;
+            return cat;
         }
 
         public ApiStatus DeleteCategory(string CategoryId)
@@ -133,16 +137,9 @@ namespace WebAppLinn3.Models
             string route = "/api/Inventory/DeleteCategoryById";
             string query = "categoryId=" + CategoryId;
 
-            apiStatus.StatusMsg = string.Format("DeleteCategory(\"{0}\") => ", CategoryId);
-            HttpResponseMessage response = SendRequestToApiAsync(route, query).Result;
-            string respString = response.Content.ReadAsStringAsync().Result;
-            if (response.IsSuccessStatusCode)
-                apiStatus.StatusMsg += "OK";
-            else
-            {
-                var parsedObject = JObject.Parse(respString);
-                apiStatus.StatusMsg += parsedObject["Message"].ToString();
-            }
+            var res = ExecuteApiRequest(route, query);
+            var msg = string.Format("DeleteCategory(\"{0}\") => {1}", CategoryId, res["msg"]);
+            apiStatus.StatusMsg = msg;
             return apiStatus;
         }
     }
