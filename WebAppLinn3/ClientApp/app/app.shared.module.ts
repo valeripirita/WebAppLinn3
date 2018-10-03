@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EmployeeService } from './services/empservice.service'
+import { CategoryService } from './services/categoryservice.service'
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -8,16 +8,16 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { HomeComponent } from './components/home/home.component';
-import { FetchEmployeeComponent } from './components/fetchemployee/fetchemployee.component'
-import { createemployee } from './components/addemployee/AddEmployee.component'
+import { FetchCategoryComponent } from './components/fetchcategory/fetchcategory.component'
+import { createcategory } from './components/addcategory/AddCategory.component'
 
 @NgModule({
     declarations: [
         AppComponent,
         NavMenuComponent,
         HomeComponent,
-        FetchEmployeeComponent,
-        createemployee,
+        FetchCategoryComponent,
+        createcategory,
     ],
     imports: [
         CommonModule,
@@ -27,13 +27,13 @@ import { createemployee } from './components/addemployee/AddEmployee.component'
         RouterModule.forRoot([
             { path: '', redirectTo: 'home', pathMatch: 'full' },
             { path: 'home', component: HomeComponent },
-            { path: 'fetch-employee', component: FetchEmployeeComponent },
-            { path: 'register-employee', component: createemployee },
-            { path: 'employee/edit/:id', component: createemployee },
+            { path: 'fetch-category', component: FetchCategoryComponent },
+            { path: 'register-category', component: createcategory },
+            { path: 'category/edit/:id', component: createcategory },
             { path: '**', redirectTo: 'home' }
         ])
     ],
-    providers: [EmployeeService]
+    providers: [CategoryService]
 })
 export class AppModuleShared {
 }

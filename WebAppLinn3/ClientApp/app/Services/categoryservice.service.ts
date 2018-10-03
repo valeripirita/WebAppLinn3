@@ -7,45 +7,51 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
 @Injectable()
-export class EmployeeService {
+export class CategoryService {
     myAppUrl: string = "";
 
     constructor(private _http: Http, @Inject('BASE_URL') baseUrl: string) {
         this.myAppUrl = baseUrl;
     }
 
-    getCityList() {
-        return this._http.get(this.myAppUrl + 'api/Employee/GetCityList')
-            .map(res => res.json())
-            .catch(this.errorHandler);
-    }
-
-    getEmployees() {
-        return this._http.get(this.myAppUrl + 'api/Employee/Index')
+    getCategories() {
+        return this._http.get(this.myAppUrl + 'api/Category/Index')
             .map((response: Response) => response.json())
             .catch(this.errorHandler);
     }
 
-    getEmployeeById(id: number) {
-        return this._http.get(this.myAppUrl + "api/Employee/Details/" + id)
+    getCategoryById(id: string) {
+        return this._http.get(this.myAppUrl + "api/Category/Details/" + id)
             .map((response: Response) => response.json())
             .catch(this.errorHandler)
     }
 
-    saveEmployee(employee) {
-        return this._http.post(this.myAppUrl + 'api/Employee/Create', employee)
+    saveCategory(category) {
+        return this._http.post(this.myAppUrl + 'api/Category/Create', category)
             .map((response: Response) => response.json())
             .catch(this.errorHandler)
     }
 
-    updateEmployee(employee) {
-        return this._http.put(this.myAppUrl + 'api/Employee/Edit', employee)
+    updateCategory(category) {
+        return this._http.put(this.myAppUrl + 'api/Category/Edit', category)
             .map((response: Response) => response.json())
             .catch(this.errorHandler);
     }
 
-    deleteEmployee(id) {
-        return this._http.delete(this.myAppUrl + "api/Employee/Delete/" + id)
+    deleteCategory(id) {
+        return this._http.delete(this.myAppUrl + "api/Category/Delete/" + id)
+            .map((response: Response) => response.json())
+            .catch(this.errorHandler);
+    }
+
+    getApiStatus() {
+        return this._http.get(this.myAppUrl + "api/Category/ApiStatus")
+            .map((response: Response) => response.json())
+            .catch(this.errorHandler);
+    }
+
+    setApiToken(token) {
+        return this._http.get(this.myAppUrl + "api/Category/SetApiToken/" + token)
             .map((response: Response) => response.json())
             .catch(this.errorHandler);
     }
