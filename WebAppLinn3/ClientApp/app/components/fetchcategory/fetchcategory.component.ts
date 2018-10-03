@@ -16,20 +16,25 @@ export class FetchCategoryComponent {
         private _router: Router, private _categoryService: CategoryService) {
 
         this.getApiStatus(true);
-        //console.log("!!!")
     }
 
     getApiStatus(thenUpdateCategories: boolean = false) {
         this._categoryService.getApiStatus().subscribe(data => {
             this.apiStatus = data;
             if (this.apiStatus.statusMsg.includes("loading"))
-                thenUpdateCategories = true;
+                setTimeout(() => { this.getApiStatus(); }, 500);
             if (thenUpdateCategories)
                 this.getCategories();
         }, error => console.error(error))
     }
 
     setApiToken(apiToken: string = "097b0f85-7a6d-44ef-9aac-abbdd994bcc4") {
+        
+        if (!apiToken.length) {
+            console.warn("apiToken can't be empty!")
+            this.getApiStatus();
+            return;
+        }
         this._categoryService.setApiToken(apiToken).subscribe(data => {
             this.apiStatus = data;
             this.getCategories(true);

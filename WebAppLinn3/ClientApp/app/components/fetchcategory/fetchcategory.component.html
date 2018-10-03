@@ -4,7 +4,6 @@
 <p>Status message: {{ apiStatus.statusMsg }}</p>
 
 <hr />
-<p *ngIf="!catList"><em>Loading...</em></p>
 <label class=" control-label col-md-12">Enter API token</label>
 <div class="col-md-4">
     <input #inpToken class="form-control" type="text" value="{{ apiStatus.apiToken }}">
@@ -13,10 +12,10 @@
 <button class="btn" (click)="setApiToken()">Don't have one? Try mine :)</button>
 
 <hr />
-<p>
-    <a [routerLink]="['/register-category']">Create Category</a>
-</p>
+<p><a [routerLink]="['/register-category']">Create Category</a></p>
+
 <hr />
+<p *ngIf="!catList"><em>Loading...</em></p>
 <table class='table' *ngIf="catList">
     <thead>
         <tr>
