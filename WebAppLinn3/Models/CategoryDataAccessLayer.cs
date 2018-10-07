@@ -7,7 +7,7 @@ namespace WebAppLinn3.Models
 {
     public class CategoryDataAccessLayer
     {
-        private static myLinnWebApiContext api = new myLinnWebApiContext();
+        private static MyLinnWebApiContext api = new MyLinnWebApiContext();
 
         public IEnumerable<Category> GetAllCategories()
         {

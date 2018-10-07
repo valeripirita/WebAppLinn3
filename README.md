@@ -1,6 +1,6 @@
-# ASP.NET Core: CRUD Using Angular 5 and Entity Framework Core
+# ASP.NET Core: CRUD Using Angular 5 (Without Entity Framework)
 
-This web application is built using ASP.NET Core 2.0 and Angular 5.
+This web application is built using ASP.NET Core 2.1 and Angular 5 (actulally 4.8)
 To read the inputs from the user, we are using Angular Forms with required field validations on the client side.
 We are also going to bind a dropdown list in the Angular Form to a table in the database using EF Core.
 

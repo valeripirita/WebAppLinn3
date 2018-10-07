@@ -18,10 +18,10 @@ namespace WebAppLinn3.Models
         public string StatusMsg { get; set; } = "loading, please wait ...";
     }
 
-    public partial class myLinnWebApiContext
+    public partial class MyLinnWebApiContext
     {
+        public ApiStatus apiStatus = new ApiStatus();
         private static HttpClient httpClient = new HttpClient();
-        public ApiStatus apiStatus { get; set; } = new ApiStatus();
 
         public ApiStatus SetApiToken(string token)
         {
